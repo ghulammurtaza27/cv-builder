@@ -1,20 +1,12 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
-import { Share2, Eye } from 'lucide-react'
 import { Button } from "@/components/ui/button"
-import { useToast } from "@/hooks/use-toast"
-import { SectionManager } from '@/components/section-manager'
-import { PdfExportButton } from '@/components/pdf-export-button'
-import ResumeTemplate from "@/components/resume-template"
-import { ResumeData, Section, SectionType } from '../types/resume'
-import { serif } from '@/lib/fonts'
-import { cn } from '@/lib/utils'
-import React from 'react'
-import dynamic from 'next/dynamic'
-import LoadingSkeleton from '@/components/loading-skeleton'
+import ResumeTemplate from '@/components/resume-template'
 import { PreviewButton } from "@/components/pdf-preview-button"
 import { PDFResume } from "@/components/pdf-resume"
+import { ResumeData } from '../types/resume'
+import React from 'react'
 
 const initialData: ResumeData = {
   personalInfo: {
@@ -98,63 +90,43 @@ const initialData: ResumeData = {
 
 const MemoizedResumeTemplate = React.memo(ResumeTemplate)
 
-
 export default function Page() {
   const [resumeData, setResumeData] = useState<ResumeData>(initialData)
-  const [isPrintPreview, setIsPrintPreview] = useState(false)
-  const { toast } = useToast()
   const [history, setHistory] = useState<ResumeData[]>([initialData])
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const handleUpdate = useCallback((newData: ResumeData) => {
     setResumeData(newData)
-  }, [])
-
-  const handleAddSection = (type: SectionType, customTitle?: string) => {
-    const newSection: Section = {
-      id: crypto.randomUUID(),
-      type,
-      title: customTitle?.toUpperCase() || type.toUpperCase(),
-      items: []
-    }
-    
-    setResumeData(prev => ({
-      ...prev,
-      sections: [...prev.sections, newSection]
-    }))
-  }
-
-  const handleShare = async () => {
-    await navigator.clipboard.writeText(window.location.href)
-    toast({
-      title: "Link copied!",
-      description: "Share this link to let others view your resume.",
-    })
-  }
-
-  const handleUndo = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(prev => prev - 1)
-      setResumeData(history[currentIndex - 1])
-    }
-  }
-
-  const handleError = (error: Error) => {
-    toast({
-      title: "Error",
-      description: error.message,
-      variant: "destructive",
-    })
-  }
+    setHistory(prev => [...prev.slice(0, currentIndex + 1), newData])
+    setCurrentIndex(prev => prev + 1)
+  }, [currentIndex])
 
   useEffect(() => {
-    const saveToLocalStorage = () => {
-      localStorage.setItem('resumeData', JSON.stringify(resumeData))
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'z') {
+        e.preventDefault()
+        
+        if (e.shiftKey) {
+          // Redo
+          if (currentIndex < history.length - 1) {
+            const newIndex = currentIndex + 1
+            setCurrentIndex(newIndex)
+            setResumeData(history[newIndex])
+          }
+        } else {
+          // Undo
+          if (currentIndex > 0) {
+            const newIndex = currentIndex - 1
+            setCurrentIndex(newIndex)
+            setResumeData(history[newIndex])
+          }
+        }
+      }
     }
-    
-    const timeoutId = setTimeout(saveToLocalStorage, 1000)
-    return () => clearTimeout(timeoutId)
-  }, [resumeData])
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [currentIndex, history])
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
@@ -162,7 +134,6 @@ export default function Page() {
         <div className="bg-white shadow-xl rounded-lg mb-4 print:shadow-none print:mb-2">
           <MemoizedResumeTemplate data={resumeData} onUpdate={handleUpdate} />
         </div>
-        
         <div className="flex gap-2">
           <PreviewButton document={<PDFResume data={resumeData} />} />
         </div>

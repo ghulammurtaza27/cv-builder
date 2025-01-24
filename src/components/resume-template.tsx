@@ -27,8 +27,6 @@ interface ResumeTemplateProps {
   onUpdate: (data: ResumeData) => void
 }
 
-
-
 export default function ResumeTemplate({ data, onUpdate }: ResumeTemplateProps) {
   const [isAIDialogOpen, setIsAIDialogOpen] = useState(false)
   const [currentSection, setCurrentSection] = useState<{
