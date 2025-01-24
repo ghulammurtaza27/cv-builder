@@ -13,6 +13,8 @@ import { cn } from '@/lib/utils'
 import React from 'react'
 import dynamic from 'next/dynamic'
 import LoadingSkeleton from '@/components/loading-skeleton'
+import { PreviewButton } from "@/components/pdf-preview-button"
+import { PDFResume } from "@/components/pdf-resume"
 
 const initialData: ResumeData = {
   personalInfo: {
@@ -92,10 +94,6 @@ const initialData: ResumeData = {
 
 const MemoizedResumeTemplate = React.memo(ResumeTemplate)
 
-const PDFResume = dynamic(() => import('@/components/pdf-resume'), {
-  ssr: false,
-  loading: () => <LoadingSkeleton />
-})
 
 export default function Page() {
   const [resumeData, setResumeData] = useState<ResumeData>(initialData)
@@ -160,12 +158,9 @@ export default function Page() {
         <div className="bg-white shadow-xl rounded-lg mb-4 print:shadow-none print:mb-2">
           <MemoizedResumeTemplate data={resumeData} onUpdate={handleUpdate} />
         </div>
-        <div className="flex justify-end gap-4">
-          <Button variant="outline" onClick={() => setIsPrintPreview(!isPrintPreview)}>
-            <Eye className="h-4 w-4 mr-2" />
-            Preview
-          </Button>
-          <PdfExportButton />
+        
+        <div className="flex gap-2">
+          <PreviewButton document={<PDFResume data={resumeData} />} />
         </div>
       </div>
     </div>

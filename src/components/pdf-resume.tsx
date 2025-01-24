@@ -1,4 +1,4 @@
-import { Page, Text, View, StyleSheet } from '@alexandernanberg/react-pdf-renderer'
+import { Page, Text, View, StyleSheet, Document } from '@alexandernanberg/react-pdf-renderer'
 import type { ResumeData, ExperienceItem, EducationItem, ProjectItem } from '@/types/resume'
 
 // Create styles
@@ -54,56 +54,62 @@ const styles = StyleSheet.create({
   }
 });
 
-export default function PDFResume({ data }: { data: ResumeData }) {
+interface PDFResumeProps {
+  data: ResumeData;
+}
+
+export function PDFResume({ data }: PDFResumeProps) {
   if (!data || !data.personalInfo) return null;
 
   return (
-    <Page size="LETTER" style={styles.page}>
-      <View style={styles.header}>
-        <Text style={styles.name}>{data.personalInfo.name}</Text>
-        <View style={styles.contactInfo}>
-          <Text>{[
-            data.personalInfo.email,
-            data.personalInfo.phone,
-            data.personalInfo.linkedin,
-            data.personalInfo.github
-          ].filter(Boolean).join(' | ')}</Text>
+    <Document>
+      <Page size="LETTER" style={styles.page}>
+        <View style={styles.header}>
+          <Text style={styles.name}>{data.personalInfo.name}</Text>
+          <View style={styles.contactInfo}>
+            <Text>{[
+              data.personalInfo.email,
+              data.personalInfo.phone,
+              data.personalInfo.linkedin,
+              data.personalInfo.github
+            ].filter(Boolean).join(' | ')}</Text>
+          </View>
         </View>
-      </View>
 
-      {data.sections?.map((section, sIndex) => (
-        <View key={sIndex} style={styles.section}>
-          <Text style={styles.sectionTitle}>{section.title}</Text>
-          
-          {section.items?.map((item, iIndex) => (
-            <View key={iIndex} style={styles.item}>
-              <View style={styles.itemHeader}>
-                <Text>{section.type === 'experience' ? 
-                  (item as ExperienceItem).company : 
-                  section.type === 'education' ? 
-                  (item as EducationItem).institution :
-                  item.title}</Text>
-                <Text>{item.location}</Text>
-              </View>
-              
-              <View style={styles.itemSubHeader}>
-                <Text>{section.type === 'experience' ? 
-                  (item as ExperienceItem).position :
-                  section.type === 'education' ? 
-                  (item as EducationItem).degree :
-                  (item as ProjectItem).skills}</Text>
-                <Text>{item.dateRange}</Text>
-              </View>
-
-              {item.accomplishments?.map((acc, aIndex) => (
-                <View key={aIndex} style={styles.bulletPoint}>
-                  <Text>• {acc}</Text>
+        {data.sections?.map((section, sIndex) => (
+          <View key={sIndex} style={styles.section}>
+            <Text style={styles.sectionTitle}>{section.title}</Text>
+            
+            {section.items?.map((item, iIndex) => (
+              <View key={iIndex} style={styles.item}>
+                <View style={styles.itemHeader}>
+                  <Text>{section.type === 'experience' ? 
+                    (item as ExperienceItem).company : 
+                    section.type === 'education' ? 
+                    (item as EducationItem).institution :
+                    item.title}</Text>
+                  <Text>{item.location}</Text>
                 </View>
-              ))}
-            </View>
-          ))}
-        </View>
-      ))}
-    </Page>
+                
+                <View style={styles.itemSubHeader}>
+                  <Text>{section.type === 'experience' ? 
+                    (item as ExperienceItem).position :
+                    section.type === 'education' ? 
+                    (item as EducationItem).degree :
+                    (item as ProjectItem).skills}</Text>
+                  <Text>{item.dateRange}</Text>
+                </View>
+
+                {item.accomplishments?.map((acc, aIndex) => (
+                  <View key={aIndex} style={styles.bulletPoint}>
+                    <Text>• {acc}</Text>
+                  </View>
+                ))}
+              </View>
+            ))}
+          </View>
+        ))}
+      </Page>
+    </Document>
   );
 }

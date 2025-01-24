@@ -26,10 +26,7 @@ interface ResumeTemplateProps {
   onUpdate: (data: ResumeData) => void
 }
 
-// Dynamically import PDFResume with SSR disabled
-const PDFResume = dynamic(() => import('./pdf-resume'), {
-  ssr: false
-});
+
 
 export default function ResumeTemplate({ data, onUpdate }: ResumeTemplateProps) {
   const [isAIDialogOpen, setIsAIDialogOpen] = useState(false)
@@ -759,20 +756,7 @@ export default function ResumeTemplate({ data, onUpdate }: ResumeTemplateProps) 
             onGenerate={handleAIGenerate}
             fieldType={currentSection?.fieldType || 'accomplishment'}
           />
-          <div className="flex gap-2 mb-4">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline">
-                  <Eye className="h-4 w-4 mr-2" />
-                  Preview PDF
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-[90vw] h-[90vh]">
-                <DialogTitle className="sr-only">PDF Preview</DialogTitle>
-                <PDFPreview data={localData} />
-              </DialogContent>
-            </Dialog>
-          </div>
+         
         </div>
       </div>
     </Providers>
