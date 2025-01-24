@@ -10,6 +10,28 @@ A modern CV/Resume builder application built with Next.js that allows users to c
 - 📄 PDF export functionality
 - 💾 Real-time preview
 - 🎯 Easy-to-use form interface
+- 🤖 AI-powered CV enhancement
+
+## AI-Powered CV Enhancement
+
+The application includes an AI assistant to help improve your CV content:
+
+- **Experience Enhancement**: Transform basic job descriptions into powerful achievement statements
+- **Skills Optimization**: Get suggestions for relevant skills based on your role and industry
+- **Language Refinement**: Improve the language and tone of your CV entries
+- **Action Verbs**: Get suggestions for strong action verbs to start your bullet points
+- **Achievements Quantification**: Get help adding metrics and numbers to your achievements
+
+Example:
+```
+Original: "Managed a team and improved sales"
+AI Enhanced: "Led a 12-person sales team, driving a 45% increase in quarterly revenue through strategic client relationship management"
+```
+
+To use the AI feature:
+1. Enter your basic experience or skill information
+2. Click the "Enhance with AI" button
+3. Choose from suggested improvements or request new variations
 
 ## Tech Stack
 
