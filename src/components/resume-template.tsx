@@ -44,6 +44,9 @@ export default function ResumeTemplate({ data, onUpdate }: ResumeTemplateProps) 
     const dragSection = newSections[dragIndex]
     newSections.splice(dragIndex, 1)
     newSections.splice(hoverIndex, 0, dragSection)
+    
+    // Update both local state and parent
+    setLocalData(prev => ({ ...prev, sections: newSections }))
     onUpdate({
       ...localData,
       sections: newSections
@@ -346,10 +349,10 @@ export default function ResumeTemplate({ data, onUpdate }: ResumeTemplateProps) 
             </div>
 
             {/* Sections */}
-            <div className="space-y-4">
+            <div className="grid gap-6">
               {localData.sections.map((section, sectionIndex) => (
                 <DraggableSection key={section.id} id={section.id} index={sectionIndex} moveSection={moveSection}>
-                  <section className="group/section mb-3 border-b pb-1 print:border-b-0">
+                  <section className="group/section mb-3 border-b pb-3 print:border-b-0 transition-all duration-200 hover:border-gray-200">
                     <div className="flex items-center justify-between">
                       <h2 className="uppercase font-bold text-[10pt] tracking-wide border-b-2 border-blue-500 inline-block">
                         {section.title}
@@ -788,14 +791,7 @@ export default function ResumeTemplate({ data, onUpdate }: ResumeTemplateProps) 
             </div>
           </DndProvider>
           <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-2 bg-white p-2 rounded-lg shadow-lg border print-hidden">
-            <Button
-              variant="outline"
-              className="gap-2"
-              onClick={() => setIsAIDialogOpen(true)}
-            >
-              <Sparkles className="h-4 w-4" />
-              AI Assistant
-            </Button>
+            
             
             {isExporting ? (
               <Button disabled className={exportHideClass}>
