@@ -35,7 +35,8 @@ const initialData: ResumeData = {
           title: "Bachelor of Science",
           degree: "Bachelor of Science",
           institution: "University Name",
-          dateRange: "2018-2022",
+          startDate: "2020-01-01",
+          endDate: "2021-12-31",
           location: "City, Country",
           accomplishments: ["GPA: 3.8", "Relevant coursework..."]
         }
@@ -51,7 +52,8 @@ const initialData: ResumeData = {
           title: "Software Engineer",
           position: "Software Engineer",
           company: "Tech Corp",
-          dateRange: "2020-Present",
+          startDate: "2020-01-01",
+          endDate: "2021-12-31",
           location: "Remote",
           accomplishments: [
             "Developed key features for main product",
@@ -68,7 +70,8 @@ const initialData: ResumeData = {
         id: crypto.randomUUID(),
         title: "Project Title",
         skills: "Skills used",
-        dateRange: "Select a date range",
+        startDate: "2020-01-01",
+        endDate: "2021-12-31",
         location: "",
         accomplishments: [
           "Write an accomplishment",
@@ -84,7 +87,8 @@ const initialData: ResumeData = {
       items: [{
         id: crypto.randomUUID(),
         title: "Category",
-        dateRange: "",
+        startDate: "2020-01-01",
+        endDate: "2021-12-31",
         location: "",
         accomplishments: ["Key skills"]
       }]
