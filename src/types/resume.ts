@@ -16,7 +16,9 @@ export interface EducationItem {
   title: string
   degree: string
   institution: string
-  dateRange: string
+  startDate?: string
+  endDate?: string
+  isPresent?: boolean
   location: string
   accomplishments: string[]
 }
@@ -26,7 +28,9 @@ export interface ExperienceItem {
   title: string;
   company: string;
   position: string;
-  dateRange: string;
+  startDate?: string
+  endDate?: string
+  isPresent?: boolean
   location: string;
   accomplishments: string[];
 }
@@ -35,7 +39,9 @@ export interface ProjectItem {
   id: string
   title: string
   skills: string
-  dateRange: string
+  startDate?: string
+  endDate?: string
+  isPresent?: boolean
   location: string
   accomplishments: string[]
 }
@@ -43,7 +49,9 @@ export interface ProjectItem {
 export interface AdditionalItem {
   id: string;
   title: string;
-  dateRange: string;
+  startDate?: string
+  endDate?: string
+  isPresent?: boolean
   location: string;
   accomplishments: string[];
 }
@@ -52,7 +60,9 @@ export interface SectionItem {
   id: string;
   degree?: string;
   institution?: string;
-  dateRange: string;
+  startDate?: string
+  endDate?: string
+  isPresent?: boolean
   location: string;
   accomplishments: string[];
 }

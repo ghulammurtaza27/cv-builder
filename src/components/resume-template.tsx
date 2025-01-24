@@ -20,6 +20,7 @@ import dynamic from 'next/dynamic'
 import { Suspense } from 'react'
 import { PDFWrapper } from './pdf-wrapper'
 import { generatePDF } from '@/lib/generate-pdf'
+import { DateSelector } from '@/components/date-selector'
 
 interface ResumeTemplateProps {
   data: ResumeData
@@ -68,7 +69,8 @@ export default function ResumeTemplate({ data, onUpdate }: ResumeTemplateProps) 
     title: '',
     degree: '',
     institution: '',
-    dateRange: '',
+    startDate: '',
+    endDate: '',
     location: '',
     accomplishments: ['']
   };
@@ -444,12 +446,27 @@ export default function ResumeTemplate({ data, onUpdate }: ResumeTemplateProps) 
                                   className="font-semibold"
                                   placeholder="Position Title"
                                 />
-                                <AIEditableText
-                                  value={item.dateRange}
-                                  onChange={(value) => updateField(sectionIndex, itemIndex, 'dateRange', value)}
-                                  className="text-gray-600"
-                                  placeholder="Dates"
-                                />
+                                <div className="flex items-center gap-1 text-xs">
+                                  <DateSelector
+                                    value={item.startDate ? new Date(item.startDate) : null}
+                                    onChange={(date) => updateField(sectionIndex, itemIndex, 'startDate', date?.toISOString() ?? '')}
+                                    placeholder="Start date"
+                                  />
+                                  <span className="text-gray-400">-</span>
+                                  <DateSelector
+                                    value={item.endDate ? new Date(item.endDate) : null}
+                                    onChange={(date) => updateField(sectionIndex, itemIndex, 'endDate', date?.toISOString() ?? '')}
+                                    isEndDate
+                                    isPresent={item.isPresent}
+                                    onPresentToggle={(isPresent) => {
+                                      updateField(sectionIndex, itemIndex, 'isPresent', isPresent.toString());
+                                      if (isPresent) {
+                                        updateField(sectionIndex, itemIndex, 'endDate', '');
+                                      }
+                                    }}
+                                    placeholder="End date"
+                                  />
+                                </div>
                               </div>
                               
                               {/* Accomplishments */}
@@ -520,12 +537,27 @@ export default function ResumeTemplate({ data, onUpdate }: ResumeTemplateProps) 
                                   />
                                 </div>
                                 <div className="flex gap-2">
-                                  <AIEditableText
-                                    value={item.dateRange}
-                                    onChange={(value) => updateField(sectionIndex, itemIndex, 'dateRange', value)}
-                                    className="text-gray-600 text-sm"
-                                    placeholder="Dates (e.g., 2018-2022)"
-                                  />
+                                  <div className="flex items-center gap-1 text-xs">
+                                    <DateSelector
+                                      value={item.startDate ? new Date(item.startDate) : null}
+                                      onChange={(date) => updateField(sectionIndex, itemIndex, 'startDate', date?.toISOString() ?? '')}
+                                      placeholder="Start date"
+                                    />
+                                    <span className="text-gray-400">-</span>
+                                    <DateSelector
+                                      value={item.endDate ? new Date(item.endDate) : null}
+                                      onChange={(date) => updateField(sectionIndex, itemIndex, 'endDate', date?.toISOString() ?? '')}
+                                      isEndDate
+                                      isPresent={item.isPresent}
+                                      onPresentToggle={(isPresent) => {
+                                        updateField(sectionIndex, itemIndex, 'isPresent', isPresent.toString());
+                                        if (isPresent) {
+                                          updateField(sectionIndex, itemIndex, 'endDate', '');
+                                        }
+                                      }}
+                                      placeholder="End date"
+                                    />
+                                  </div>
                                 </div>
                               </div>
                               
@@ -591,12 +623,27 @@ export default function ResumeTemplate({ data, onUpdate }: ResumeTemplateProps) 
                                   placeholder="Project Title"
                                 />
                                 <div className="flex gap-2">
-                                  <AIEditableText
-                                    value={item.dateRange}
-                                    onChange={(value) => updateField(sectionIndex, itemIndex, 'dateRange', value)}
-                                    className="text-gray-600 text-sm"
-                                    placeholder="Dates (e.g., Jan 2023 - Present)"
-                                  />
+                                  <div className="flex items-center gap-1 text-xs">
+                                    <DateSelector
+                                      value={item.startDate ? new Date(item.startDate) : null}
+                                      onChange={(date) => updateField(sectionIndex, itemIndex, 'startDate', date?.toISOString() ?? '')}
+                                      placeholder="Start date"
+                                    />
+                                    <span className="text-gray-400">-</span>
+                                    <DateSelector
+                                      value={item.endDate ? new Date(item.endDate) : null}
+                                      onChange={(date) => updateField(sectionIndex, itemIndex, 'endDate', date?.toISOString() ?? '')}
+                                      isEndDate
+                                      isPresent={item.isPresent}
+                                      onPresentToggle={(isPresent) => {
+                                        updateField(sectionIndex, itemIndex, 'isPresent', isPresent.toString());
+                                        if (isPresent) {
+                                          updateField(sectionIndex, itemIndex, 'endDate', '');
+                                        }
+                                      }}
+                                      placeholder="End date"
+                                    />
+                                  </div>
                                 </div>
                               </div>
                               
@@ -665,11 +712,27 @@ export default function ResumeTemplate({ data, onUpdate }: ResumeTemplateProps) 
                                   className="font-semibold"
                                 />
                                 <div className="flex gap-2">
-                                  <AIEditableText
-                                    value={item.dateRange}
-                                    onChange={(value) => updateField(sectionIndex, itemIndex, 'dateRange', value)}
-                                    className="text-gray-600 text-sm"
-                                  />
+                                  <div className="flex items-center gap-1 text-xs">
+                                    <DateSelector
+                                      value={item.startDate ? new Date(item.startDate) : null}
+                                      onChange={(date) => updateField(sectionIndex, itemIndex, 'startDate', date?.toISOString() ?? '')}
+                                      placeholder="Start date"
+                                    />
+                                    <span className="text-gray-400">-</span>
+                                    <DateSelector
+                                      value={item.endDate ? new Date(item.endDate) : null}
+                                      onChange={(date) => updateField(sectionIndex, itemIndex, 'endDate', date?.toISOString() ?? '')}
+                                      isEndDate
+                                      isPresent={item.isPresent}
+                                      onPresentToggle={(isPresent) => {
+                                        updateField(sectionIndex, itemIndex, 'isPresent', isPresent.toString());
+                                        if (isPresent) {
+                                          updateField(sectionIndex, itemIndex, 'endDate', '');
+                                        }
+                                      }}
+                                      placeholder="End date"
+                                    />
+                                  </div>
                                 </div>
                               </div>
                               
@@ -789,7 +852,9 @@ const createSafeData = (data?: ResumeData): ResumeData => {
       items: (section.items || []).map(item => ({
         id: item.id || crypto.randomUUID(),
         title: item.title || 'Item Title',
-        dateRange: item.dateRange || 'Date Range',
+        startDate: item.startDate ? new Date(item.startDate).toISOString() : undefined,
+        endDate: item.endDate ? new Date(item.endDate).toISOString() : undefined,
+        isPresent: item.isPresent ?? false,
         location: item.location || 'Location',
         accomplishments: item.accomplishments || ['Accomplishment description'],
         // Type-specific fields with safe defaults

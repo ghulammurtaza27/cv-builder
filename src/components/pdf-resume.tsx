@@ -61,6 +61,9 @@ interface PDFResumeProps {
 export function PDFResume({ data }: PDFResumeProps) {
   if (!data || !data.personalInfo) return null;
 
+  // Add debug logging
+  console.log('PDF Data:', JSON.stringify(data, null, 2));
+
   return (
     <Document>
       <Page size="LETTER" style={styles.page}>
@@ -97,7 +100,13 @@ export function PDFResume({ data }: PDFResumeProps) {
                     section.type === 'education' ? 
                     (item as EducationItem).degree :
                     (item as ProjectItem).skills}</Text>
-                  <Text>{item.dateRange}</Text>
+                  <Text>
+                    {item.startDate && !isNaN(Date.parse(item.startDate)) &&
+                      new Date(item.startDate).toLocaleDateString('en-US', {month: 'short', year: 'numeric'})}
+                    
+                    {(item.endDate && !isNaN(Date.parse(item.endDate)) || item.isPresent) &&
+                      ` - ${item.isPresent ? 'Present' : new Date(item.endDate?.toString() ?? '').toLocaleDateString('en-US', {month: 'short', year: 'numeric'})}`}
+                  </Text>
                 </View>
 
                 {item.accomplishments?.map((acc, aIndex) => (
